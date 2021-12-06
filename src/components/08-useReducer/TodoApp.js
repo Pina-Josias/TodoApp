@@ -6,13 +6,6 @@ import { todoReducer } from "./todoReducer";
 const initialState = () => {
   return JSON.parse(localStorage.getItem("todos")) || [];
 };
-//     [
-//   {
-//     id: new Date().getTime(),
-//     desc: "Aprender React",
-//     done: false,
-//   },
-// ];
 
 export const TodoApp = () => {
   const [todos, dispatch] = useReducer(todoReducer, [], initialState);
@@ -43,6 +36,21 @@ export const TodoApp = () => {
     resetForm();
   };
 
+  const deleteItem = (todoItem) => {
+    const action = {
+      type: "remove",
+      payload: todoItem,
+    };
+    dispatch(action);
+  };
+
+  const handleTongle = (todoId) => {
+    const action = {
+      type: "update",
+      payload: todoId,
+    };
+    dispatch(action);
+  };
   return (
     <div>
       <h1>App Reducer: ({todos.length})</h1>
@@ -52,10 +60,19 @@ export const TodoApp = () => {
           <ul className="list-group list-group-flush">
             {todos.map((todo, i) => (
               <li key={todo.id} className="list-group-item">
-                <p className="text-center">
+                <p
+                  className={`${todo.done && "complete"}`}
+                  onClick={() => handleTongle(todo.id)}
+                >
                   {i + 1}. {todo.desc}
                 </p>
-                <button type="button" name="" id="" className="btn btn-danger">
+                <button
+                  type="button"
+                  name=""
+                  id=""
+                  className="btn btn-danger"
+                  onClick={() => deleteItem(todo)}
+                >
                   Eliminar
                 </button>
               </li>

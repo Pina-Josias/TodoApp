@@ -3,10 +3,18 @@ export const todoReducer = (state = [], action) => {
     case "add":
       return [...state, action.payload];
     case "update":
-      break;
+      return state.map((todo) => {
+        if (todo.id === action.payload) {
+          return {
+            ...todo,
+            done: !todo.done,
+          };
+        }
+        return todo;
+      });
     case "remove":
-      break;
-
+      const newState = state.filter((elem) => elem.id !== action.payload.id);
+      return [...newState];
     default:
       return state;
   }
